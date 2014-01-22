@@ -7,8 +7,6 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 
 public class GameObject extends Actor{
 
-	public Texture texture;
-	public TextureRegion region;
 	public Vector2 position;
 	public int txtWidth;
 	public int txtHeight;

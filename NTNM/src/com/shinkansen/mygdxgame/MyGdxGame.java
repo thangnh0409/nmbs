@@ -2,30 +2,21 @@ package com.shinkansen.mygdxgame;
 
 import java.util.ArrayList;
 import java.util.Random;
-
-import javax.xml.transform.Templates;
-
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL10;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.Texture.TextureFilter;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.shinkansen.gameasset.Assets;
+import com.shinkansen.gameobject.Containers;
 import com.shinkansen.gameobject.Number;
 
 public class MyGdxGame implements ApplicationListener {
-	private OrthographicCamera camera;
-	private SpriteBatch batch;
-	private Texture texture;
-	private Sprite sprite;
 	private Stage stage;
 	TextureRegion region;
-	
+	public static float scrWidth;
+	public static float scrHeight;
 	private int arr[][];
 	private ArrayList<Integer> arrRandNum;
 	
@@ -38,11 +29,10 @@ public class MyGdxGame implements ApplicationListener {
 	
 	@Override
 	public void create() {		
-		float w = Gdx.graphics.getWidth();
-		float h = Gdx.graphics.getHeight();
-		
-		camera = new OrthographicCamera(1, h/w);
-		batch = new SpriteBatch();
+		scrWidth = Gdx.graphics.getWidth();
+		scrHeight = Gdx.graphics.getHeight();
+		//init assets
+		Assets.load();
 		
 		// init array random number
 		
@@ -53,11 +43,6 @@ public class MyGdxGame implements ApplicationListener {
 		stage = new Stage();
 		Gdx.input.setInputProcessor(stage);
 		addActorToStage();
-		texture = new Texture(Gdx.files.internal("data/1.png"));
-		texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
-		
-		region = new TextureRegion(texture);
-		
 		
 	}
 	public void randomNumber(){
@@ -86,6 +71,7 @@ public class MyGdxGame implements ApplicationListener {
 		}
 	}
 	public void addActorToStage(){
+		// add number actor
 		for (int i = 0; i < ROW; i++) {
 			for (int j = 0; j < COLUMN; j++) {
 				Number numberActor = new Number(i * CELL_WIDTH + ROOT_X,
@@ -95,11 +81,14 @@ public class MyGdxGame implements ApplicationListener {
 			}
 		}
 		
+		// add container actor
+		Containers container = new Containers(scrWidth - Assets.ttContainer.getWidth(), 0);
+		stage.addActor(container);
+		
 	}
 	@Override
 	public void dispose() {
-		batch.dispose();
-		texture.dispose();
+		
 	}
 
 	@Override
